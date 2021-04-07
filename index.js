@@ -21,8 +21,10 @@ app.use(morgan("dev"));
 app.get("/facturas", (req, res, next) => {
   res.json(facturas);
 });
-app.get("/facturas/factura", (req, res, next) => {
-  debug("Probando siguiente señal");
+app.get("/facturas/:factura", (req, res, next) => {
+  const facturaNumero = +req.params.factura;
+  const facturaBuscada = facturas.filter(factura => factura.id === facturaNumero);
+  res.json(facturaBuscada);
 });
 app.use((req, res, next) => {
   res.status(404).send({ error: true, mensaje: "Recurso no encontrado" });
