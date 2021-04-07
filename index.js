@@ -4,7 +4,7 @@ const express = require("express");
 const { program } = require("commander");
 const morgan = require("morgan");
 const { response } = require("express");
-const { facturas } = require("./facturas.json");
+const rutaFacturas = require("./rutas/facturas.js");
 
 program.option("-p, --puerto <puerto>", "Puerto para el servidor");
 program.parse(process.argv);
@@ -18,14 +18,8 @@ const server = app.listen(puerto, () => {
 });
 
 app.use(morgan("dev"));
-app.get("/facturas", (req, res, next) => {
-  res.json(facturas);
-});
-app.get("/facturas/:factura", (req, res, next) => {
-  const facturaNumero = +req.params.factura;
-  const facturaBuscada = facturas.filter(factura => factura.id === facturaNumero);
-  res.json(facturaBuscada);
-});
+app.get("/facturas", rutaFacturas);
+app.get("/facturas/:factura", rutaFacturas);
 app.use((req, res, next) => {
   res.status(404).send({ error: true, mensaje: "Recurso no encontrado" });
 });
