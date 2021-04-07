@@ -4,6 +4,7 @@ const express = require("express");
 const { program } = require("commander");
 const morgan = require("morgan");
 const { response } = require("express");
+const { facturas } = require("./facturas.json");
 
 program.option("-p, --puerto <puerto>", "Puerto para el servidor");
 program.parse(process.argv);
@@ -17,10 +18,10 @@ const server = app.listen(puerto, () => {
 });
 
 app.use(morgan("dev"));
-app.get("/facturas", (res, req, next) => {
-  debug("Probando señal");
+app.get("/facturas", (req, res, next) => {
+  res.json(facturas);
 });
-app.get("/facturas/factura", (res, req, next) => {
+app.get("/facturas/factura", (req, res, next) => {
   debug("Probando siguiente señal");
 });
 app.use((req, res, next) => {
