@@ -2,6 +2,8 @@ require("dotenv").config();
 const debug = require("debug")("facturas:principal");
 const express = require("express");
 const { program } = require("commander");
+const morgan = require("morgan");
+const { response } = require("express");
 
 program.option("-p, --puerto <puerto>", "Puerto para el servidor");
 program.parse(process.argv);
@@ -12,4 +14,19 @@ const app = express();
 
 const server = app.listen(puerto, () => {
   debug(`Servidor escuchando en el puerto ${puerto}.`);
+});
+
+app.use(morgan("dev"));
+app.get("/facturas", (res, req, next) => {
+  debug("Probando señal");
+});
+app.get("/facturas/factura", (res, req, next) => {
+  debug("Probando siguiente señal");
+});
+app.use((req, res, next) => {
+  res.status(404).send({ error: true, mensaje: "Recurso no encontrado" });
+});
+app.use((err, req, res, next) => {
+  debug(err);
+  res.status(500).send({ error: true, mensaje: "Error general" });
 });
