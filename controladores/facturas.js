@@ -25,8 +25,23 @@ const crearFactura = nuevaFactura => {
   return respuesta;
 };
 
+const modificarFactura = (idFactura, facturaModificada) => {
+  const facturaBuscada = facturas.find(factura => factura.id === idFactura);
+  const respuesta = {
+    factura: null,
+    error: null
+  };
+  if (facturaBuscada) {
+    facturaModificada.id = facturaBuscada.id;
+    facturas[facturas.indexOf(facturaBuscada)] = facturaModificada;
+    respuesta.factura = facturaModificada;
+  }
+  return respuesta;
+};
+
 module.exports = {
   facturasObjeto,
   filtrarFactura,
-  crearFactura
+  crearFactura,
+  modificarFactura
 };
