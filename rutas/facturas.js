@@ -32,7 +32,13 @@ router.post("/factura", (req, res, next) => {
 router.put("/factura/:idFactura", (req, res, next) => {
   const facturaNumero = +req.params.idFactura;
   const facturaModificada = req.body;
-  const facturaFinal = modificarFactura(facturaNumero, facturaModificada);
+  const facturaFinal = modificarFactura(facturaNumero, facturaModificada, "completo");
+  res.json(facturaFinal);
+});
+router.patch("/factura/:idFactura", (req, res, next) => {
+  const facturaNumero = +req.params.idFactura;
+  const facturaModificada = req.body;
+  const facturaFinal = modificarFactura(facturaNumero, facturaModificada, "parcial");
   res.json(facturaFinal);
 });
 

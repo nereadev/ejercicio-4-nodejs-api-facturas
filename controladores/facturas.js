@@ -25,12 +25,24 @@ const crearFactura = nuevaFactura => {
   return respuesta;
 };
 
-const modificarFactura = (idFactura, facturaModificada) => {
+const modificarFactura = (idFactura, facturaModificada, tipoModificacion) => {
   const facturaBuscada = facturas.find(factura => factura.id === idFactura);
   const respuesta = {
     factura: null,
     error: null
   };
+  if (tipoModificacion === "parcial") {
+    const cambios = facturaModificada;
+    const facturaModificadaParcial = {
+      ...facturaBuscada,
+      ...cambios
+    };
+    if (facturaBuscada) {
+      facturaModificadaParcial.id = facturaBuscada.id;
+      facturas[facturas.indexOf(facturaBuscada)] = facturaModificadaParcial;
+      respuesta.factura = facturaModificadaParcial;
+    }
+  }
   if (facturaBuscada) {
     facturaModificada.id = facturaBuscada.id;
     facturas[facturas.indexOf(facturaBuscada)] = facturaModificada;
