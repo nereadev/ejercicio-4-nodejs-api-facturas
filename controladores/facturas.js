@@ -13,4 +13,20 @@ const filtrarFactura = (tipo) => {
   return factura;
 };
 
-module.exports = { facturasObjeto, filtrarFactura };
+const crearFactura = nuevaFactura => {
+  const respuesta = {
+    factura: null,
+    error: null
+  };
+  if (!respuesta.error) {
+    facturas.push(nuevaFactura);
+    respuesta.factura = nuevaFactura;
+  }
+  return respuesta;
+};
+
+module.exports = {
+  facturasObjeto,
+  filtrarFactura,
+  crearFactura
+};

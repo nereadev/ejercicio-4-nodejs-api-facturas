@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const { facturas } = require("../facturas.json");
-const { facturasObjeto, filtrarFactura } = require("../controladores/facturas");
+const { facturasObjeto, filtrarFactura, crearFactura } = require("../controladores/facturas");
 
 const router = express.Router();
 
@@ -21,6 +21,11 @@ router.get("/factura/:idFactura", (req, res, next) => {
   const facturaNumero = +req.params.idFactura;
   const facturaBuscada = facturas.filter(factura => factura.id === facturaNumero);
   res.json(facturaBuscada);
+});
+router.post("/factura", (req, res, next) => {
+  const nuevaFactura = req.body;
+  const facturaIntroducida = crearFactura(nuevaFactura);
+  res.json(facturaIntroducida);
 });
 
 module.exports = router;

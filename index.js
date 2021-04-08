@@ -18,6 +18,7 @@ const server = app.listen(puerto, () => {
 });
 
 app.use(morgan("dev"));
+app.use(express.json());
 app.use("/facturas", rutaFacturas);
 app.use((req, res, next) => {
   res.status(404).send({ error: true, mensaje: "Recurso no encontrado" });
