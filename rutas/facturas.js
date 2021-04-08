@@ -1,31 +1,21 @@
 const express = require("express");
 const cors = require("cors");
 const { facturas } = require("../facturas.json");
+const { facturasObjeto, filtrarFactura } = require("../controladores/facturas");
 
 const router = express.Router();
 
 router.get("/", (req, res, next) => {
-  const facturasObjeto = {
-    total: facturas.length,
-    datos: facturas
-  };
-  res.json(facturasObjeto);
+  const getFacturas = facturasObjeto(facturas);
+  res.json(getFacturas);
 });
 router.get("/ingresos", (req, res, next) => {
-  const facturaIngreso = facturas.filter(factura => factura.tipo === "ingreso");
-  const facturasIngresoObjeto = {
-    total: facturaIngreso.length,
-    datos: facturaIngreso
-  };
-  res.json(facturasIngresoObjeto);
+  const facturasIngresos = filtrarFactura("ingreso");
+  res.json(facturasIngresos);
 });
 router.get("/gastos", (req, res, next) => {
-  const facturaIngreso = facturas.filter(factura => factura.tipo === "gasto");
-  const facturasIngresoObjeto = {
-    total: facturaIngreso.length,
-    datos: facturaIngreso
-  };
-  res.json(facturasIngresoObjeto);
+  const facturasGastos = filtrarFactura("gasto");
+  res.json(facturasGastos);
 });
 router.get("/factura/:idFactura", (req, res, next) => {
   const facturaNumero = +req.params.idFactura;
