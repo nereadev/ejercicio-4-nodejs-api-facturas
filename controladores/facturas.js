@@ -1,4 +1,4 @@
-const { facturas } = require("../facturas.json");
+let { facturas } = require("../facturas.json");
 
 const facturasObjeto = (facturas) => (
   {
@@ -51,9 +51,21 @@ const modificarFactura = (idFactura, facturaModificada, tipoModificacion) => {
   return respuesta;
 };
 
+const borrarFactura = idFactura => {
+  const respuesta = {
+    factura: null,
+    error: null
+  };
+  const factura = facturas.find(factura => factura.id === idFactura);
+  facturas = facturas.filter(factura => factura.id !== idFactura);
+  respuesta.factura = facturas;
+  return respuesta;
+};
+
 module.exports = {
   facturasObjeto,
   filtrarFactura,
   crearFactura,
-  modificarFactura
+  modificarFactura,
+  borrarFactura
 };

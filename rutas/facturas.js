@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const { facturas } = require("../facturas.json");
 const {
-  facturasObjeto, filtrarFactura, crearFactura, modificarFactura
+  facturasObjeto, filtrarFactura, crearFactura, modificarFactura, borrarFactura
 } = require("../controladores/facturas");
 
 const router = express.Router();
@@ -40,6 +40,11 @@ router.patch("/factura/:idFactura", (req, res, next) => {
   const facturaModificada = req.body;
   const facturaFinal = modificarFactura(facturaNumero, facturaModificada, "parcial");
   res.json(facturaFinal);
+});
+router.delete("/factura/:idFactura", (req, res, next) => {
+  const facturaNumero = +req.params.idFactura;
+  const facturasFinales = borrarFactura(facturaNumero);
+  res.json(facturasFinales);
 });
 
 module.exports = router;
