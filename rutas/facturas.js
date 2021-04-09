@@ -1,9 +1,28 @@
 const express = require("express");
+const { checkSchema, check, validationResult } = require("express-validator");
 const cors = require("cors");
 const { facturas } = require("../facturas.json");
 const {
   facturasObjeto, filtrarFactura, crearFactura, modificarFactura, borrarFactura
 } = require("../controladores/facturas");
+const { errorPeticion } = require("../utils/errores");
+
+const validacionFactura = () => {
+  const id = {
+    errorMessage: "Falta el id de la factura.",
+    notEmpty: true
+  };
+  const tipoIva = {
+    isFloat: {
+      errorMessage: "El tipo de Iva debe ser un número entero.",
+      notEmpty: true
+    }
+  };
+  id.exists = true;
+  tipoIva.exists = {
+    errorMessage: "Falta el tipo de Iva."
+  };
+};
 
 const router = express.Router();
 
@@ -24,11 +43,17 @@ router.get("/factura/:idFactura", (req, res, next) => {
   const facturaBuscada = facturas.filter(factura => factura.id === facturaNumero);
   res.json(facturaBuscada);
 });
-router.post("/factura", (req, res, next) => {
-  const nuevaFactura = req.body;
-  const facturaIntroducida = crearFactura(nuevaFactura);
-  res.json(facturaIntroducida);
-});
+router.post("/factura",
+  checkSchema(() => validacionFactura()),
+  (req, res, next) => {
+    const error400 = errorPeticion(req);
+    if (error400) {
+      return error400;
+    }
+    const nuevaFactura = req.body;
+    const facturaIntroducida = crearFactura(nuevaFactura);
+    res.json(facturaIntroducida);
+  });
 router.put("/factura/:idFactura", (req, res, next) => {
   const facturaNumero = +req.params.idFactura;
   const facturaModificada = req.body;

@@ -1,4 +1,5 @@
 let { facturas } = require("../facturas.json");
+const { generaError } = require("../utils/errores");
 
 const facturasObjeto = (facturas) => (
   {
@@ -18,6 +19,10 @@ const crearFactura = nuevaFactura => {
     factura: null,
     error: null
   };
+  if (facturas.find(factura => factura.id === nuevaFactura.id)) {
+    const error = generaError("Ya existe la factura", 409);
+    respuesta.error = error;
+  }
   if (!respuesta.error) {
     facturas.push(nuevaFactura);
     respuesta.factura = nuevaFactura;
