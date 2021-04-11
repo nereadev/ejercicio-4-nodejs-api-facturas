@@ -8,21 +8,63 @@ const {
 const { errorPeticion } = require("../utils/errores");
 
 const validacionFactura = () => {
-  const id = {
-    errorMessage: "Falta el id de la factura.",
+  const numero = {
+    errorMessage: "Falta el numero de la factura.",
     notEmpty: true
   };
-  const tipoIva = {
+  const fecha = {
+    errorMessage: "Falta la fecha de la factura.",
+    notEmpty: true
+  };
+  const abonada = {
+    errorMessage: "Falta el estado de la factura",
+    notEmpty: true
+  };
+  const base = {
     isFloat: {
+      errorMessage: "La base debe ser un decimal.",
+      notEmpty: true
+    }
+  };
+  const tipoIva = {
+    isInt: {
       errorMessage: "El tipo de Iva debe ser un número entero.",
       notEmpty: true
     }
   };
-  id.exists = true;
+  const tipo = {
+    matches: {
+      errorMessage: "El tipo solo puede ser ingreso o gasto",
+      options: ["ingreso", "gasto"]
+    }
+  };
+  const vencimiento = {
+    errorMessage: "Falta la fecha de vencimiento."
+  };
+  numero.exists = true;
+  fecha.exists = true;
+  abonada.exists = true;
+  base.exists = {
+    errorMessage: "Falta la base."
+  };
   tipoIva.exists = {
     errorMessage: "Falta el tipo de Iva."
   };
+  /* tipo.exists = {
+    errorMessage: "Falta el tipo de factura."
+  }; */
+  vencimiento.optional = true;
+  return {
+    numero,
+    fecha,
+    abonada,
+    base,
+    tipoIva,
+    /*     tipo,
+ */ vencimiento
+  };
 };
+const validaLaFactura = validacionFactura();
 
 const router = express.Router();
 
@@ -44,7 +86,7 @@ router.get("/factura/:idFactura", (req, res, next) => {
   res.json(facturaBuscada);
 });
 router.post("/factura",
-  checkSchema(() => validacionFactura()),
+  checkSchema(validaLaFactura),
   (req, res, next) => {
     const error400 = errorPeticion(req);
     if (error400) {
@@ -54,18 +96,30 @@ router.post("/factura",
     const facturaIntroducida = crearFactura(nuevaFactura);
     res.json(facturaIntroducida);
   });
-router.put("/factura/:idFactura", (req, res, next) => {
-  const facturaNumero = +req.params.idFactura;
-  const facturaModificada = req.body;
-  const facturaFinal = modificarFactura(facturaNumero, facturaModificada, "completo");
-  res.json(facturaFinal);
-});
-router.patch("/factura/:idFactura", (req, res, next) => {
-  const facturaNumero = +req.params.idFactura;
-  const facturaModificada = req.body;
-  const facturaFinal = modificarFactura(facturaNumero, facturaModificada, "parcial");
-  res.json(facturaFinal);
-});
+router.put("/factura/:idFactura",
+  checkSchema(validaLaFactura),
+  (req, res, next) => {
+    const error400 = errorPeticion(req);
+    if (error400) {
+      return error400;
+    }
+    const facturaNumero = +req.params.idFactura;
+    const facturaModificada = req.body;
+    const facturaFinal = modificarFactura(facturaNumero, facturaModificada, "completo");
+    res.json(facturaFinal);
+  });
+router.patch("/factura/:idFactura",
+  checkSchema(validaLaFactura),
+  (req, res, next) => {
+    const error400 = errorPeticion(req);
+    if (error400) {
+      return error400;
+    }
+    const facturaNumero = +req.params.idFactura;
+    const facturaModificada = req.body;
+    const facturaFinal = modificarFactura(facturaNumero, facturaModificada, "parcial");
+    res.json(facturaFinal);
+  });
 router.delete("/factura/:idFactura", (req, res, next) => {
   const facturaNumero = +req.params.idFactura;
   const facturasFinales = borrarFactura(facturaNumero);
