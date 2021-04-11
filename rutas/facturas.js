@@ -34,8 +34,8 @@ const validacionFactura = () => {
   };
   const tipo = {
     matches: {
-      errorMessage: "El tipo solo puede ser ingreso o gasto",
-      options: ["ingreso", "gasto"]
+      errorMessage: "El tipo debe ser ingreso o gasto.",
+      options: [/\b(?:ingreso|gasto)\b/],
     }
   };
   const vencimiento = {
@@ -50,9 +50,9 @@ const validacionFactura = () => {
   tipoIva.exists = {
     errorMessage: "Falta el tipo de Iva."
   };
-  /* tipo.exists = {
+  tipo.exists = {
     errorMessage: "Falta el tipo de factura."
-  }; */
+  };
   vencimiento.optional = true;
   return {
     numero,
@@ -60,8 +60,8 @@ const validacionFactura = () => {
     abonada,
     base,
     tipoIva,
-    /*     tipo,
- */ vencimiento
+    tipo,
+    vencimiento
   };
 };
 const validaLaFactura = validacionFactura();
