@@ -74,8 +74,8 @@ router.get("/", (req, res, next) => {
 });
 router.get("/ingresos", (req, res, next) => {
   const parametroTag = req.query;
-  const facturasIngresos = filtrarFactura("ingreso", parametroTag);
   console.log(parametroTag);
+  const facturasIngresos = filtrarFactura("ingreso", parametroTag);
   res.json(facturasIngresos);
 });
 router.get("/gastos", (req, res, next) => {

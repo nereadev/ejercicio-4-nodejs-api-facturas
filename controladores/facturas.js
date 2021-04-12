@@ -11,9 +11,13 @@ const facturasObjeto = (facturas) => (
 const filtrarFactura = (tipo, parametroTag) => {
   const facturaFiltrada = facturas.filter(factura => factura.tipo === tipo);
   const factura = facturasObjeto(facturaFiltrada);
-  if (parametroTag === "abonada") {
+  if (parametroTag.abonada === "true") {
     const facturaFiltradaCondicion = facturaFiltrada
-      .filter(factura => factura.abonada);
+      .filter(factura => factura.abonada === true);
+    return facturaFiltradaCondicion;
+  } else if (parametroTag.abonada === "false") {
+    const facturaFiltradaCondicion = facturaFiltrada
+      .filter(factura => factura.abonada === false);
     return facturaFiltradaCondicion;
   } else {
     return factura;
