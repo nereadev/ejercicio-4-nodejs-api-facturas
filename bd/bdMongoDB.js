@@ -3,7 +3,7 @@ const debug = require("debug")("facturas:dbMongoDB");
 const chalk = require("chalk");
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb://localhost/proyectos", {
+mongoose.connect("mongodb://localhost/facturas", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false
