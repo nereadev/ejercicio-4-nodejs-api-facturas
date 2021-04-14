@@ -65,10 +65,23 @@ const modificarProyecto = async (idProyecto, cambios) => {
   }
 };
 
+const borrarAlumno = async idProyecto => {
+  const proyectoEncontrado = await Proyecto.findByIdAndDelete(idProyecto);
+  const respuesta = {
+    proyecto: null,
+    error: null
+  };
+  if (proyectoEncontrado) {
+    respuesta.proyecto = proyectoEncontrado;
+    return respuesta;
+  }
+};
+
 module.exports = {
   filtrarProyectos,
   filtrarPorId,
   crearProyecto,
   sustituirProyecto,
-  modificarProyecto
+  modificarProyecto,
+  borrarAlumno
 };

@@ -3,7 +3,7 @@ const { checkSchema, check, validationResult } = require("express-validator");
 const cors = require("cors");
 const { proyectos } = require("../proyectos.json");
 const {
-  filtrarProyectos, filtrarPorId, crearProyecto, sustituirProyecto, modificarProyecto
+  filtrarProyectos, filtrarPorId, crearProyecto, sustituirProyecto, modificarProyecto, borrarAlumno
 } = require("../controladores/proyectos");
 const { errorPeticion } = require("../utils/errores");
 
@@ -49,6 +49,15 @@ router.patch("/proyecto/:idProyecto", async (req, res, next) => {
   const idProyecto = req.params.idProyecto;
   const nuevoProyecto = req.body;
   const { error, proyecto } = await modificarProyecto(idProyecto, nuevoProyecto);
+  if (error) {
+    next(error);
+  } else {
+    res.json(proyecto);
+  }
+});
+router.delete("/proyecto/:idProyecto", async (req, res, next) => {
+  const idProyecto = req.params.idProyecto;
+  const { error, proyecto } = await borrarAlumno(idProyecto);
   if (error) {
     next(error);
   } else {
