@@ -1,3 +1,5 @@
+const { DateTime } = require("luxon");
+const Factura = require("../bd/modelos/factura");
 let { facturas } = require("../facturas.json");
 const { generaError } = require("../utils/errores");
 
@@ -8,20 +10,31 @@ const facturasObjeto = (facturas) => (
   }
 );
 
-const filtrarFactura = (tipo, parametroTag) => {
-  const facturaFiltrada = facturas.filter(factura => factura.tipo === tipo);
-  const factura = facturasObjeto(facturaFiltrada);
-  if (parametroTag.abonada === "true") {
-    const facturaFiltradaCondicion = facturaFiltrada
-      .filter(factura => factura.abonada === true);
-    return facturaFiltradaCondicion;
-  } else if (parametroTag.abonada === "false") {
-    const facturaFiltradaCondicion = facturaFiltrada
-      .filter(factura => factura.abonada === false);
-    return facturaFiltradaCondicion;
+/* const calcularVencimiento = (fecha) => {
+  const fechaFormato = DateTime.fromMillis(Number(fecha));
+  const hoyFromato = DateTime.now();
+  const diferencia = `${Math.round(hoyFromato.diff(fechaFormato, ["days"]).days)}`;
+  if (diferencia > 0) {
+    // vencido = false
   } else {
-    return factura;
+    // vencido = true
   }
+}; */
+
+const filtrarFactura = async (tipo, parametroTag) => {
+  const condicion = {
+    where: {}
+  };
+  if (tipo === "ingreso" || tipo === "gasto") {
+    condicion.where.tipo = tipo;
+  }
+  if (parametroTag.abonadas) {
+    condicion.where.abonada = parametroTag.abonadas === "true";
+  }
+  /*   const facturaFiltrada = facturas.filter(factura => factura.tipo === tipo);
+ */ const facturasBD = await Factura.findAll(condicion);
+  const factura = facturasObjeto(facturasBD);
+  return factura;
 };
 
 const crearFactura = nuevaFactura => {

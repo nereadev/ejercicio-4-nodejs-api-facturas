@@ -72,14 +72,14 @@ router.get("/", (req, res, next) => {
   const getFacturas = facturasObjeto(facturas);
   res.json(getFacturas);
 });
-router.get("/ingresos", (req, res, next) => {
+router.get("/ingresos", async (req, res, next) => {
   const parametroTag = req.query;
-  console.log(parametroTag);
-  const facturasIngresos = filtrarFactura("ingreso", parametroTag);
+  const facturasIngresos = await filtrarFactura("ingreso", parametroTag);
   res.json(facturasIngresos);
 });
 router.get("/gastos", (req, res, next) => {
-  const facturasGastos = filtrarFactura("gasto");
+  const parametroTag = req.query;
+  const facturasGastos = filtrarFactura("gasto", parametroTag);
   res.json(facturasGastos);
 });
 router.get("/factura/:idFactura", (req, res, next) => {
