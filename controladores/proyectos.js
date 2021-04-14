@@ -53,9 +53,22 @@ const sustituirProyecto = async (idProyecto, sustitutoProyecto) => {
   return respuesta;
 };
 
+const modificarProyecto = async (idProyecto, cambios) => {
+  const respuesta = {
+    proyecto: null,
+    error: null
+  };
+  const proyecto = await Proyecto.findByIdAndUpdate(idProyecto, cambios);
+  if (proyecto) {
+    respuesta.proyecto = proyecto;
+    return respuesta;
+  }
+};
+
 module.exports = {
   filtrarProyectos,
   filtrarPorId,
   crearProyecto,
-  sustituirProyecto
+  sustituirProyecto,
+  modificarProyecto
 };
