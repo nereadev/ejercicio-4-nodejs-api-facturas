@@ -5,6 +5,7 @@ const { program } = require("commander");
 const morgan = require("morgan");
 const { response } = require("express");
 const rutaFacturas = require("./rutas/facturas.js");
+require("./bd/bdMongoDB");
 
 program.option("-p, --puerto <puerto>", "Puerto para el servidor");
 program.parse(process.argv);

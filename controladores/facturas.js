@@ -1,5 +1,5 @@
 const { DateTime } = require("luxon");
-const Factura = require("../bd/modelos/factura");
+const Factura = require("../bd/modelos/facturaMySql");
 let { facturas } = require("../facturas.json");
 const { generaError } = require("../utils/errores");
 

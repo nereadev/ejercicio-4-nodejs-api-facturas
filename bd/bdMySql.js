@@ -1,5 +1,5 @@
 require("dotenv").config();
-const debug = require("debug")("facturas:db");
+const debug = require("debug")("facturas:dbMySql");
 const chalk = require("chalk");
 const { Sequelize } = require("sequelize");
 
