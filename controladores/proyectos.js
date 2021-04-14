@@ -33,8 +33,29 @@ const crearProyecto = async nuevoProyecto => {
   return nuevoProyectoEnBD;
 };
 
+const sustituirProyecto = async (idProyecto, sustitutoProyecto) => {
+  const proyectoEncontrado = await Proyecto.findById(idProyecto);
+  const respuesta = {
+    proyecto: null,
+    error: null
+  };
+  if (proyectoEncontrado) {
+    await proyectoEncontrado.updateOne(sustitutoProyecto);
+    respuesta.proyecto = sustitutoProyecto;
+  } else {
+    const { error, proyecto } = await crearProyecto(sustitutoProyecto);
+    if (error) {
+      respuesta.error = error;
+    } else {
+      respuesta.proyecto = proyecto;
+    }
+  }
+  return respuesta;
+};
+
 module.exports = {
   filtrarProyectos,
   filtrarPorId,
-  crearProyecto
+  crearProyecto,
+  sustituirProyecto
 };
