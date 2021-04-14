@@ -5,6 +5,7 @@ const { program } = require("commander");
 const morgan = require("morgan");
 const { response } = require("express");
 const rutaFacturas = require("./rutas/facturas.js");
+const rutasProyectos = require("./rutas/proyectos.js");
 require("./bd/bdMongoDB");
 
 program.option("-p, --puerto <puerto>", "Puerto para el servidor");
@@ -21,6 +22,7 @@ const server = app.listen(puerto, () => {
 app.use(morgan("dev"));
 app.use(express.json());
 app.use("/facturas", rutaFacturas);
+app.use("/proyectos", rutasProyectos);
 app.use((req, res, next) => {
   res.status(404).send({ error: true, mensaje: "Recurso no encontrado" });
 });

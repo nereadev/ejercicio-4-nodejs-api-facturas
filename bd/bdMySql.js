@@ -12,6 +12,4 @@ const sequelize = new Sequelize({
   logging: mensaje => debug(chalk.blue(mensaje))
 });
 
-console.log(sequelize);
-
 module.exports = sequelize;
