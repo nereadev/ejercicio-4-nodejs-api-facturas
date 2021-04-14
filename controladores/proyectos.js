@@ -23,7 +23,18 @@ const filtrarPorId = async id => {
   return datoFiltrado;
 };
 
+const crearProyecto = async nuevoProyecto => {
+  const respuesta = {
+    proyecto: null,
+    error: null
+  };
+  const nuevoProyectoEnBD = await Proyecto.create(nuevoProyecto);
+  respuesta.proyecto = nuevoProyectoEnBD;
+  return nuevoProyectoEnBD;
+};
+
 module.exports = {
   filtrarProyectos,
-  filtrarPorId
+  filtrarPorId,
+  crearProyecto
 };

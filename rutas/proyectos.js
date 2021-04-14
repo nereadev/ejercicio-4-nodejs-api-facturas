@@ -2,7 +2,7 @@ const express = require("express");
 const { checkSchema, check, validationResult } = require("express-validator");
 const cors = require("cors");
 const { proyectos } = require("../proyectos.json");
-const { filtrarProyectos, filtrarPorId } = require("../controladores/proyectos");
+const { filtrarProyectos, filtrarPorId, crearProyecto } = require("../controladores/proyectos");
 const { errorPeticion } = require("../utils/errores");
 
 const router = express.Router();
@@ -27,6 +27,11 @@ router.get("/proyecto/:idProyecto", async (req, res, next) => {
   const idProyecto = req.params.idProyecto;
   const proyectoPorId = await filtrarPorId(idProyecto);
   res.json(proyectoPorId);
+});
+router.post("/proyecto", async (req, res, next) => {
+  const nuevoProyecto = req.body;
+  const proyectoAnyadido = await crearProyecto(nuevoProyecto);
+  res.json(proyectoAnyadido);
 });
 
 module.exports = router;
